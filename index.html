@@ -511,9 +511,107 @@
     }
 
   
+  /* Modal */
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.75);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #1b1b32;
+  padding: 25px 30px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  color: #fff;
+}
+
+.modal-content h2 {
+  color: #ffcc00;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
+}
+.close:hover { color: #fff; }
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+input, button {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #2d2d5a;
+  color: #fff;
+}
+input::placeholder { color: #ccc; }
+button {
+  background-color: #ffcc00;
+  color: #1b1b32;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+button:hover:enabled { background-color: #ffb700; }
+label { font-size: 0.9rem; display: flex; align-items: center; gap: 8px; color: #ccc; }
+
+  
   </style>
 </head>
 <body>
+  
+  <!-- Modal Formulário -->
+<div id="formModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Inscrição no Curso</h2>
+    <form id="formVenda">
+      <input type="text" id="nome" name="nome" placeholder="Nome completo" required>
+      <input type="text" id="nascimento" name="nascimento" placeholder="DD/MM/AAAA" maxlength="10" required>
+      <input type="email" id="email" name="email" placeholder="E-mail" required>
+      <input type="tel" id="whatsapp" name="whatsapp" placeholder="WhatsApp com DDD" required>
+      <input type="text" id="telegram" name="telegram" placeholder="@Telegram (opcional)">
+      
+      <label>
+        <input type="checkbox" id="confirmacao" name="confirmacao" required>
+        Confirmo que sou o titular do pagamento e usarei o mesmo e-mail e número informados aqui.
+      </label>
+
+      <p style="font-size:0.9rem; color:#ccc;">
+        ⚠️ O acesso ao grupo será concedido apenas ao titular do pagamento. Enviar comprovante de outra pessoa não garante entrada.
+      </p>
+
+      <button type="submit" id="submitBtn" disabled>Enviar Formulário</button>
+    </form>
+  </div>
+</div>
+
   <!-- Menu superior -->
   <nav class="navbar" id="navbar">
     <div class="user-menu">
@@ -671,115 +769,4 @@
       </div>
 
       
-      <p style="text-align: center; margin-top: 2rem; font-size: 1.2rem; font-weight: 600; color: #ffcc00;">
-        💥 Você sairá do zero à fluência, pronto para viver experiências incríveis na Rússia e com a língua russa! 🌟
-      </p>
-    </section>
-
-    <section class="emotion-section">
-      <h2>✨ Sonha em Conhecer a Rússia?</h2>
-      <p>Mas tem medo de ficar perdido, sem entender nada e passar perrengues terríveis? 🇷🇺</p>
-      <p>Então o nosso <strong>Curso Intensivo de Russo Ao Vivo</strong> chegou pra te salvar!</p>
-      <p>Quer <strong>encontrar o amor na Rússia</strong>, <strong>viajar pelas antigas terras soviéticas</strong> cheias de história, <strong>fazer amigos incríveis</strong> ou até <strong>impressionar seus colegas</strong> chegando já falando russo?</p>
-      <p>Nós podemos <strong>transformar isso em realidade</strong>! 🗺️🔥</p>
-      <p>Com aulas ao vivo, suporte direto, e um método rápido, você vai sair do zero e se comunicar com confiança.</p>
-      <p><strong>Não adie seu sonho!</strong> O russo pode ser o que te conecta a novas oportunidades, amizades e aventuras que você nem imagina.</p>
-    </section>
-
-    <section class="cta-section">
-      <a href="#" class="cta">Quero Garantir Minha Vaga Agora!</a>
-      <p class="guarantee">✅ Garantia de 7 dias ou seu dinheiro de volta</p>
-    </section>
-
-    <footer>
-      <p>Curso Fluência Russa &copy; 2025 - Todos os direitos reservados</p>
-    </footer>
-  </div>
-
-  <!-- Botão voltar ao topo -->
-  <div class="back-to-top" id="backToTop">
-    <i class="fas fa-arrow-up"></i>
-  </div>
-
-  <script>
-    // Timer de 20 minutos
-    let time = 20 * 60;
-    const timerEl = document.getElementById('timer');
-
-    function updateTimer() {
-      const minutes = Math.floor(time / 60);
-      const seconds = time % 60;
-      timerEl.textContent = `Oferta expira em: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-      time--;
-      if (time < 0) {
-        timerEl.textContent = '⚠️ Oferta encerrada!';
-        timerEl.style.color = '#ff0040';
-      }
-    }
-
-    setInterval(updateTimer, 1000);
-
-    // Menu dropdown
-    const userIcon = document.getElementById('userIcon');
-    const userMenu = document.getElementById('userMenu');
-    const contactIcon = document.getElementById('contactIcon');
-    const contactMenu = document.getElementById('contactMenu');
-
-    userIcon.addEventListener('click', function() {
-      userMenu.classList.toggle('active');
-      contactMenu.classList.remove('active');
-    });
-
-    contactIcon.addEventListener('click', function() {
-      contactMenu.classList.toggle('active');
-      userMenu.classList.remove('active');
-    });
-
-    // Fechar menu ao clicar fora
-    document.addEventListener('click', function(event) {
-      if (!userIcon.contains(event.target) && !userMenu.contains(event.target)) {
-        userMenu.classList.remove('active');
-      }
-      if (!contactIcon.contains(event.target) && !contactMenu.contains(event.target)) {
-        contactMenu.classList.remove('active');
-      }
-    });
-
-    // Botão voltar ao topo
-    const backToTop = document.getElementById('backToTop');
-
-    window.addEventListener('scroll', function() {
-      if (window.pageYOffset > 300) {
-        backToTop.classList.add('active');
-      } else {
-        backToTop.classList.remove('active');
-      }
-    });
-
-    backToTop.addEventListener('click', function() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-
-    // Navbar que desaparece ao rolar
-    const navbar = document.getElementById('navbar');
-    let lastScrollY = window.scrollY;
-
-    window.addEventListener('scroll', function() {
-      if (window.scrollY > lastScrollY && window.scrollY > 100) {
-        // Rolar para baixo - esconder navbar
-        navbar.classList.add('hidden');
-      } else {
-        // Rolar para cima - mostrar navbar
-        navbar.classList.remove('hidden');
-      }
-      
-      lastScrollY = window.scrollY;
-    });
-  </script>
-  
-  
-</body>
-</html>
+      <p style="te
