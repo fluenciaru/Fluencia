@@ -6,45 +6,50 @@
     <title>Login - English ASAP</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: #0a0f1a; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        body { background: #0a0f1a; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
         .login-card { background: #1e293b; padding: 2.5rem; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
         h2 { margin-bottom: 1.5rem; font-size: 1.5rem; color: #f8fafc; }
-        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; outline: none; box-sizing: border-box; }
+        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; outline: none; box-sizing: border-box; font-size: 16px; }
         input:focus { border-color: #3b82f6; }
         button { width: 100%; padding: 14px; background: #3b82f6; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 15px; transition: background 0.3s; }
         button:hover { background: #2563eb; }
+        button:disabled { background: #475569; cursor: not-allowed; }
         #msg { color: #f87171; margin-top: 15px; font-size: 0.9rem; min-height: 1.2rem; }
     </style>
 </head>
 <body>
     <div class="login-card">
         <h2>Acesse seu curso</h2>
-        <input type="email" id="email" placeholder="Seu e-mail de compra">
+        <input type="email" id="email" placeholder="Seu e-mail de compra" spellcheck="false">
         <input type="password" id="password" placeholder="Sua senha">
         <button id="btnLogin" onclick="login()">Entrar</button>
         <p id="msg"></p>
     </div>
 
     <script>
-        // Configurações extraídas do seu projeto
+        // Configuração do Supabase
         const supabaseUrl = 'https://rnmpqknafnoipjszcwta.supabase.co';
         const supabaseKey = 'sb_publishable_zsGIwdGxiTkHNDQ7S1l_9w_uP5a5gy2';
         
-        // Inicialização garantida para navegadores mobile
+        // Inicialização
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
         async function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const emailField = document.getElementById('email');
+            const passwordField = document.getElementById('password');
             const btn = document.getElementById('btnLogin');
             const msg = document.getElementById('msg');
 
+            const email = emailField.value.trim();
+            const password = passwordField.value;
+
             if (!email || !password) {
+                msg.style.color = "#f87171";
                 msg.innerText = "Preencha todos os campos.";
                 return;
             }
 
-            // Feedback visual de carregamento
+            // Interface em modo de carregamento
             btn.innerText = "Verificando...";
             btn.disabled = true;
             msg.innerText = "";
@@ -56,6 +61,7 @@
                 });
 
                 if (error) {
+                    msg.style.color = "#f87171";
                     msg.innerText = "Erro: " + error.message;
                     btn.innerText = "Entrar";
                     btn.disabled = false;
@@ -63,19 +69,20 @@
                     msg.style.color = "#4ade80";
                     msg.innerText = "Sucesso! Redirecionando...";
                     
-                    // Redirecionamento para a página principal (index.html)
+                    // Redireciona para o arquivo principal
                     setTimeout(() => {
                         window.location.href = "index.html";
-                    }, 500);
+                    }, 800);
                 }
             } catch (err) {
-                msg.innerText = "Erro inesperado. Tente novamente.";
+                msg.style.color = "#f87171";
+                msg.innerText = "Erro de conexão. Tente novamente.";
                 btn.innerText = "Entrar";
                 btn.disabled = false;
             }
         }
 
-        // Permitir login ao apertar "Enter" no teclado
+        // Atalho Enter
         document.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 login();
