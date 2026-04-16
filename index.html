@@ -316,6 +316,20 @@
     // Executa a verificação assim que a página começa a carregar
     checkAccess();
 </script>
+
+
+    const supabaseUrl = 'https://rnmpqknafnoipjszcwta.supabase.co';
+const supabaseKey = 'sb_publishable_zsGIwdGxiTkHNDQ7S1l_9w_uP5a5gy2';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+// Isso vai ativar o "porteiro" que verifica o login
+async function checkAccess() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+        window.location.href = "login.html"; // Se não estiver logado, expulsa da página
+    }
+}
+checkAccess();
 </head>
 <body>
 <div class="curso-wrapper">
