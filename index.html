@@ -264,6 +264,38 @@
             }
         }
     </style>
+    <style>
+    /* Bloqueia seleção de texto e arrasto de imagens globalmente */
+    body {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    /* Garante que links e botões continuem funcionando */
+    a, button, .btn-video {
+        -webkit-user-select: auto;
+        user-select: auto;
+        pointer-events: auto !important;
+    }
+</style>
+
+<script>
+    // Bloqueia o clique direito (Botão direito do mouse)
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Bloqueia atalhos de teclado (F12, Ctrl+Shift+I, Ctrl+U, Ctrl+S)
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || 
+            (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
+            (e.ctrlKey && e.keyCode == 85) || 
+            (e.ctrlKey && e.keyCode == 83)) {
+            return false;
+        }
+    };
+</script>
 </head>
 <body>
 <div class="curso-wrapper">
