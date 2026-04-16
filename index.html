@@ -1,9 +1,44 @@
-<!DOCTYPE html>
-<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Изучение английского - Marcos Dantas | Лёгкий и практичный метод</titlqe>
+    <title>Изучение английского - Marcos Dantas | Лёгкий и практичный метод</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        (function() {
+            // Aqui estão os seus dados reais
+            const supabaseUrl = 'https://rnmpqknafnoipjszcwta.supabase.co';
+            const supabaseKey = 'sb_publishable_zsGIwdGxiTkHNDQ7S1l_9w_uP5a5gy2';
+            
+            const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+            async function checkAccess() {
+                try {
+                    const { data, error } = await supabase.auth.getSession();
+                    // Se não houver sessão ativa, manda para o login
+                    if (error || !data.session) {
+                        window.location.href = "login.html";
+                    }
+                } catch (e) {
+                    window.location.href = "login.html";
+                }
+            }
+
+            checkAccess();
+
+            // Bloqueios de segurança contra cópia
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.onkeydown = e => {
+                if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.keyCode == 85)) {
+                    return false;
+                }
+            };
+        })();
+    </script>
+
+    <style>
+        /* Mantenha todo o seu CSS que já estava no arquivo aqui... */е английского - Marcos Dantas | Лёгкий и практичный метод</title>
     
         <style>
         * {
