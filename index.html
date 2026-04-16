@@ -317,19 +317,71 @@
     checkAccess();
 </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    const supabaseUrl = 'https://rnmpqknafnoipjszcwta.supabase.co';
-const supabaseKey = 'sb_publishable_zsGIwdGxiTkHNDQ7S1l_9w_uP5a5gy2';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-// Isso vai ativar o "porteiro" que verifica o login
-async function checkAccess() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-        window.location.href = "login.html"; // Se não estiver logado, expulsa da página
-    }
-}
-checkAccess();
+
+    <script>
+
+        const supabaseUrl = 'https://rnmpqknafnoipjszcwta.supabase.co';
+
+        const supabaseKey = 'sb_publishable_zsGIwdGxiTkHNDQ7S1l_9w_uP5a5gy2';
+
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+
+
+        async function checkAccess() {
+
+            try {
+
+                const { data: { session }, error } = await supabase.auth.getSession();
+
+                
+
+                if (error || !session) {
+
+                    console.log("Acesso negado ou erro na sessão");
+
+                    window.location.href = "login.html";
+
+                } else {
+
+                    console.log("Acesso autorizado para: " + session.user.email);
+
+                }
+
+            } catch (err) {
+
+                console.error("Erro ao verificar acesso:", err);
+
+                window.location.href = "login.html";
+
+            }
+
+        }
+
+
+
+        // Executa a verificação
+
+        checkAccess();
+
+
+
+        // Proteções visuais contra cópia
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        document.onkeydown = e => {
+
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false;
+
+        };
+
+    </script>
+
+    
 </head>
 <body>
 <div class="curso-wrapper">
