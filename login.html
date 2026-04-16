@@ -27,15 +27,16 @@
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         async function login() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-            if (error) {
-                document.getElementById('msg').innerText = "Erro: " + error.message;
-            } else {
-                window.location.href = "Englishasapru.html"; // Nome do seu arquivo principal
-            }
+    if (error) {
+        document.getElementById('msg').innerText = "Erro: " + error.message;
+    } else {
+        // MUDE DE "Englishasapru.html" PARA "index.html"
+        window.location.href = "index.html"; 
+    }
         }
     </script>
 </body>
