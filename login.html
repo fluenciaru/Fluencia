@@ -6,57 +6,57 @@
     <title>Login - English ASAP</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: #0a0f1a; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .login-card { background: #1e293b; padding: 2.5rem; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-        h2 { margin-bottom: 1.5rem; font-size: 1.5rem; color: #f8fafc; }
-        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; outline: none; box-sizing: border-box; font-size: 16px; }
-        input:focus { border-color: #3b82f6; }
-        button { width: 100%; padding: 14px; background: #3b82f6; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-top: 15px; transition: background 0.3s; }
-        button:hover { background: #2563eb; }
-        button:disabled { background: #475569; cursor: not-allowed; }
-        #msg { color: #f87171; margin-top: 15px; font-size: 0.9rem; min-height: 1.2rem; }
+        body { background: #0a0f1a; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-card { background: #1e293b; padding: 2.5rem; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
+        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 14px; background: #3b82f6; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; }
+        #msg { margin-top: 15px; font-size: 0.9rem; min-height: 1.2rem; }
     </style>
 </head>
 <body>
     <div class="login-card">
         <h2>Acesse seu curso</h2>
-        <input type="email" id="email" placeholder="Seu e-mail de compra" spellcheck="false">
+        <input type="email" id="email" placeholder="Seu e-mail">
         <input type="password" id="password" placeholder="Sua senha">
-        <button id="btnLogin" onclick="login()">Entrar</button>
+        <button id="btnLogin">Entrar</button>
         <p id="msg"></p>
     </div>
 
     <script>
+        // Configuração direta
         const supabaseUrl = 'https://rnmpqknafnoipjszcwta.supabase.co';
         const supabaseKey = 'sb_publishable_zsGIwdGxiTkHNDQ7S1l_9w_uP5a5gy2';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-        async function login() {
+        // Usamos addEventListener para garantir que o clique seja registrado
+        document.getElementById('btnLogin').addEventListener('click', async () => {
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const msg = document.getElementById('msg');
+            const btn = document.getElementById('btnLogin');
 
-            // TESTE DE CLIQUE: Se este alerta não aparecer, o erro é no HTML.
-            alert("Tentando conectar ao banco...");
+            msg.innerText = "Conectando...";
+            msg.style.color = "white";
+            btn.disabled = true;
 
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
 
-            if (error) {
-                alert("Erro do Banco: " + error.message);
-                msg.innerText = "Erro: " + error.message;
-            } else {
-                alert("Login com sucesso! Redirecionando...");
-                window.location.href = "index.html";
-            }
-        }
-
-        // Atalho Enter
-        document.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                login();
+                if (error) {
+                    msg.style.color = "#f87171";
+                    msg.innerText = "Erro: " + error.message;
+                    btn.disabled = false;
+                } else {
+                    msg.style.color = "#4ade80";
+                    msg.innerText = "Sucesso! Entrando...";
+                    setTimeout(() => { window.location.href = "index.html"; }, 500);
+                }
+            } catch (err) {
+                msg.innerText = "Falha crítica de conexão.";
+                btn.disabled = false;
             }
         });
     </script>
