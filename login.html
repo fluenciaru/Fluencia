@@ -6,56 +6,54 @@
     <title>Login - English ASAP</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background: #0a0f1a; color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .login-card { background: #1e293b; padding: 2.5rem; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
-        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 14px; background: #3b82f6; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; }
-        #msg { margin-top: 15px; font-size: 0.9rem; min-height: 1.2rem; }
+        body { background: #0a0f1a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #1e293b; padding: 2rem; border-radius: 15px; width: 90%; max-width: 350px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        #msg { margin-top: 15px; font-size: 0.9rem; color: #f87171; }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <h2>Acesse seu curso</h2>
-        <input type="email" id="email" placeholder="Seu e-mail">
-        <input type="password" id="password" placeholder="Sua senha">
-        <button id="btnLogin">Entrar</button>
+    <div class="card">
+        <h2>Entrar no Curso</h2>
+        <input type="email" id="email" placeholder="E-mail">
+        <input type="password" id="password" placeholder="Senha">
+        <button id="btn" onclick="executarLogin()">Entrar</button>
         <p id="msg"></p>
     </div>
 
-<script>
-    console.log("Script carregado!"); // Veja se isso aparece no console do navegador
+    <script>
+        const supabaseUrl = 'https://rnmpqknafnoipjszcwta.supabase.co';
+        const supabaseKey = 'sb_publishable_zsGIwdGxiTkHNDQ7S1l_9w_uP5a5gy2';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    const supabaseUrl = 'https://rnmpqknafnoipjszcwta.supabase.co';
-    const supabaseKey = 'sb_publishable_zsGIwdGxiTkHNDQ7S1l_9w_uP5a5gy2';
-    
-    // Teste se a biblioteca carregou
-    if (typeof window.supabase === 'undefined') {
-        alert("ERRO: A biblioteca do Supabase não carregou. Verifique sua internet.");
-    }
+        async function executarLogin() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('msg');
+            
+            // TESTE VISUAL IMEDIATO
+            msg.style.color = "yellow";
+            msg.innerText = "Conectando ao Supabase..."; 
 
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
 
-    document.getElementById('btnLogin').addEventListener('click', async () => {
-        const msg = document.getElementById('msg');
-        console.log("Botão clicado!"); 
-        msg.innerText = "Tentativa iniciada..."; // Se isso aparecer, o botão está vivo!
-
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password
-        });
-
-        if (error) {
-            msg.innerText = "Erro do Banco: " + error.message;
-            console.error(error);
-        } else {
-            msg.innerText = "Sucesso! Entrando...";
-            window.location.href = "index.html";
+                if (error) {
+                    msg.style.color = "#f87171";
+                    msg.innerText = "Erro: " + error.message;
+                } else {
+                    msg.style.color = "#4ade80";
+                    msg.innerText = "Sucesso! Entrando...";
+                    window.location.href = "index.html";
+                }
+            } catch (err) {
+                msg.innerText = "Erro de conexão fatal.";
+            }
         }
-    });
-</script>
+    </script>
 </body>
 </html>
